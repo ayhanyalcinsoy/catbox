@@ -384,7 +384,7 @@ return 0;
 //        uid_t uid = (uid_t)regs.ecx;
 //        gid_t gid = (gid_t)regs.edx;
 //        PyObject* dict = PyObject_GetAttrString( ctx->ret_object, "ownerships" );
-//        PyDict_SetItem( dict, PyString_FromString(path), PyTuple_Pack( 2, PyInt_FromLong(uid), PyInt_FromLong(gid)) );
+//        PyDict_SetItem( dict, PyUnicode_FromString(path), PyTuple_Pack( 2, PyLong_FromLong(uid), PyLong_FromLong(gid)) );
         return 1;
     }
     if(0 & LOG_MODE) {
@@ -393,7 +393,7 @@ return 0;
 //        const char* path = get_str(pid, regs.ebx);
 //        mode_t mode = (mode_t)regs.ecx;
 //        PyObject* dict = PyObject_GetAttrString( ctx->ret_object, "modes" );
-//        PyDict_SetItem( dict, PyString_FromString(path), PyInt_FromLong(mode) );
+//        PyDict_SetItem( dict, PyUnicode_FromString(path), PyLong_FromLong(mode) );
         return 1;
     }
     if(0 & FAKE_ID) {

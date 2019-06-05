@@ -206,7 +206,7 @@ make_pathlist(PyObject *paths)
 			free_pathlist(pathlist);
 			return NULL;
 		}
-		str = PyString_AsString(item);
+		str = PyUnicode_AsUTF8(item);
 		if (!str) {
 			Py_DECREF(item);
 			free_pathlist(pathlist);

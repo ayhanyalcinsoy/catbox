@@ -53,7 +53,7 @@ static char doc_canonical[] = "Resolve and simplify given path.\n"
 static PyObject *
 catbox_version(PyObject *self)
 {
-return PyString_FromString(CATBOX_VERSION());
+return PyUnicode_FromString(CATBOX_VERSION());
 }
 
 static PyObject *
@@ -119,11 +119,11 @@ catbox_run(PyObject *self, PyObject *args, PyObject *kwargs)
 				PyObject *callable = PyList_GetItem(callables, index);
 				if (!PyCallable_Check(callable)) {
 					PyObject *hook_name = PyList_GetItem(hook_names, index);
-					PyObject *error_string = PyString_FromFormat(
+					PyObject *error_string = PyUnicode_FromFormat(
 												 "Event hook %s should be a callable function",
-												 PyString_AsString(hook_name)
+												 PyUnicode_AsUTF8(hook_name)
 											 );
-					PyErr_SetString(PyExc_TypeError, PyString_AsString(error_string));
+					PyErr_SetString(PyExc_TypeError, PyUnicode_AsUTF8(error_string));
 					return NULL;
 				}
 			}
@@ -198,7 +198,7 @@ catbox_canonical(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	ret = PyString_FromString(canonical);
+	ret = PyUnicode_FromString(canonical);
 	return ret;
 }
 
@@ -210,8 +210,16 @@ static PyMethodDef methods[] = {
 	{ NULL, NULL, 0, NULL }
 };
 
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "catbox",     /* m_name */
+    doc_catbox,                /* m_doc */
+    -1,                  /* m_size */
+    methods,             /* m_methods */
+};
+
 PyMODINIT_FUNC
-initcatbox(void)
+PyInit_catbox(void)
 {
-	Py_InitModule3("catbox", methods, doc_catbox);
+	return PyModule_Create(&moduledef);
 }

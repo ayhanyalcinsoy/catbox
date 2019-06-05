@@ -31,9 +31,9 @@ run_python_callable(PyObject *callable, PyObject *args)
 		PyObject *tb;
 		PyErr_Fetch(&e, &val, &tb);
 		if (PyErr_GivenExceptionMatches(e, PyExc_SystemExit)) {
-			if (PyInt_Check(val)) {
+			if (PyLong_Check(val)) {
 				// Callable exits by sys.exit(n)
-				exit(PyInt_AsLong(val));
+				exit(PyLong_AsLong(val));
 			} else {
 				// Callable exits by sys.exit()
 				exit(2);
@@ -49,7 +49,7 @@ run_python_callable(PyObject *callable, PyObject *args)
 static void
 run_event_hook(struct trace_context *ctx, const char *hook_name, PyObject *args)
 {
-	PyObject *py_hook_name = PyString_FromString(hook_name);
+	PyObject *py_hook_name = PyUnicode_FromString(hook_name);
 	if (ctx->event_hooks && PyDict_Contains(ctx->event_hooks, py_hook_name) == 1) {
 		PyObject *hook = PyDict_GetItem(ctx->event_hooks, py_hook_name);
 		run_python_callable(hook, args);
@@ -276,7 +276,7 @@ core_trace_loop(struct trace_context *ctx)
 			fprintf(stderr, "BORKBORK: nr %d, pid %d, status %x, event %d\n", ctx->nr_children, pid, status, event);
 
 			PyObject *args = PyTuple_New(1);
-			PyTuple_SetItem(args, 0, PyInt_FromLong(pid));
+			PyTuple_SetItem(args, 0, PyLong_FromLong(pid));
 			run_event_hook(ctx, "child_died_unexpectedly", args);
 		}
 
@@ -413,7 +413,7 @@ catbox_core_run(struct trace_context *ctx)
 
 	// Run child_initialized hook before notifying child to continue.
 	PyObject *args = PyTuple_New(1);
-	PyTuple_SetItem(args, 0, PyInt_FromLong(child_pid));
+	PyTuple_SetItem(args, 0, PyLong_FromLong(child_pid));
 	run_event_hook(ctx, "child_initialized", args);
 
 	// Start watchdog process

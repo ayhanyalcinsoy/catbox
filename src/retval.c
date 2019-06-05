@@ -23,8 +23,7 @@ static PyMemberDef members[] = {
 };
 
 static PyTypeObject RetVal_type = {
-	PyObject_HEAD_INIT(NULL)
-	0,			/* ob_size */
+	PyVarObject_HEAD_INIT(NULL, 0)
 	"catbox.RetVal",	/* tp_name */
 	sizeof(RetVal),		/* tp_basicsize */
 	0,			/* tp_itemsize */
@@ -100,9 +99,9 @@ catbox_retval_add_violation(struct trace_context *ctx, const char *operation, co
 	PyObject *item;
 
 	item = PyTuple_New(3);
-	PyTuple_SetItem(item, 0, PyString_FromString(operation));
-	PyTuple_SetItem(item, 1, PyString_FromString(path));
-	PyTuple_SetItem(item, 2, PyString_FromString(canonical));
+	PyTuple_SetItem(item, 0, PyUnicode_FromString(operation));
+	PyTuple_SetItem(item, 1, PyUnicode_FromString(path));
+	PyTuple_SetItem(item, 2, PyUnicode_FromString(canonical));
 	PyList_Append(ret->violations, item);
 
 	if (ctx->logger) {

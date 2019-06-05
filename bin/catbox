@@ -18,8 +18,10 @@ import catbox
 def run(cmd):
     return subprocess.call(cmd, shell=True)
 
+
 def logger(operation, path, resolved_path):
     sys.stderr.write("Violation: %s %s\n" % (operation, resolved_path))
+
 
 def main():
     parser = optparse.OptionParser(
@@ -61,7 +63,7 @@ def main():
 
     opts, args = parser.parse_args()
     if opts.version:
-        print catbox.version()
+        print(catbox.version())
 
     exit_val = 0
     for cmd in args:
@@ -78,6 +80,7 @@ def main():
             exit_val = 1
 
     sys.exit(exit_val)
+
 
 if __name__ == "__main__":
     main()
