@@ -51,7 +51,7 @@ static char doc_canonical[] = "Resolve and simplify given path.\n"
 "    path string.";
 
 static PyObject *
-catbox_version(PyObject *self)
+catbox_version(PyObject *self, PyObject *args)
 {
 return PyUnicode_FromString(CATBOX_VERSION());
 }
@@ -205,8 +205,8 @@ catbox_canonical(PyObject *self, PyObject *args, PyObject *kwargs)
 static PyMethodDef methods[] = {
 	{ "run", (PyCFunction) catbox_run, METH_VARARGS | METH_KEYWORDS, doc_run },
 	{ "canonical", (PyCFunction) catbox_canonical, METH_VARARGS | METH_KEYWORDS, doc_canonical },
-	{ "version", (PyCFunction) catbox_version, 0, NULL },
-	{ "has_pcre", (PyCFunction) catbox_has_pcre, 0, NULL },
+	{ "version", (PyCFunction) catbox_version, METH_NOARGS, NULL },
+	{ "has_pcre", (PyCFunction) catbox_has_pcre, METH_NOARGS, NULL },
 	{ NULL, NULL, 0, NULL }
 };
 
